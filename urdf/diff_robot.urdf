@@ -37,13 +37,13 @@
     <!-- pillar joint -->
     <link name="panel_link">
         <visual>
-        <origin xyz="0.0875 -0.09 0.005" rpy="0 0 0"/>
-        <geometry>
-            <box size="0.21 0.21 0.01"/>
-        </geometry>
-        <material name="black">
-            <color rgba="0.0 0.0 0.0 1" /> 
-        </material>
+            <origin xyz="0.0875 -0.09 0.005" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.21 0.21 0.01"/>
+            </geometry>
+            <material name="black">
+                <color rgba="0.0 0.0 0.0 1" /> 
+            </material>
         </visual>
         <collision>
             <origin xyz=" 0.0875 -0.09 0.005" rpy="0 0 0" />

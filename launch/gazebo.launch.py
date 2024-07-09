@@ -23,7 +23,8 @@ def generate_launch_description():
     spawn_entity_cmd = Node(
         package='gazebo_ros', 
         executable='spawn_entity.py',
-        arguments=['-entity', robot_name_in_model,  '-file', urdf_model_path ], output='screen')
+        arguments=['-entity', robot_name_in_model,  '-file', urdf_model_path], 
+        output='screen')
     
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
