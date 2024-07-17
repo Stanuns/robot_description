@@ -36,7 +36,7 @@ def generate_launch_description():
         package='joint_state_publisher',
         executable='joint_state_publisher',
         # name='joint_state_publisher',
-        # arguments=[urdf_model_path]
+        arguments=[urdf_model_path]
         )
     
     # laser_state_publisher_node = Node(
@@ -46,18 +46,18 @@ def generate_launch_description():
     #     arguments=['0.087', '0', '0.195','3.1415', '0','0','base_link','laser']
     #     )
     
-    # odom_state_publisher_node = Node(
-    #     package='tf2_ros',
-    #     executable='static_transform_publisher',
-    #     name='odom_to_base',
-    #     arguments=['0', '0', '0','0', '0','0','odom', 'base_link']
-    #     )
+    world_map_publisher_node = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='world_to_map',
+        arguments=['0', '0', '0','0', '0','0','world', 'map']
+        )
 
     ld.add_action(start_gazebo_cmd)
     ld.add_action(spawn_entity_cmd)
     ld.add_action(robot_state_publisher_node)
     # ld.add_action(joint_state_publisher_node)
     # ld.add_action(laser_state_publisher_node)
-    # ld.add_action(odom_state_publisher_node)
+    ld.add_action(world_map_publisher_node)
 
     return ld
