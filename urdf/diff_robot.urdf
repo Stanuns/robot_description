@@ -397,7 +397,7 @@
             <frame_name>world</frame_name>
             <body_name>base_footprint</body_name>
             <update_rate>50.0</update_rate>
-            <gaussian_noise>0.01</gaussian_noise>
+            <gaussian_noise>0.0</gaussian_noise>
             <xyz_offset>0 0 0</xyz_offset>
             <rpy_offset>0 0 0</rpy_offset>
         </plugin>
