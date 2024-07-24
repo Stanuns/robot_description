@@ -3,6 +3,7 @@ from launch import LaunchDescription
 from launch.actions import ExecuteProcess
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
+from launch.substitutions import LaunchConfiguration
 
 def generate_launch_description():
     robot_name_in_model = 'luxshare_robot'
@@ -29,14 +30,16 @@ def generate_launch_description():
     robot_state_publisher_node = Node(
         package='robot_state_publisher',
         executable='robot_state_publisher',
+        name='robot_state_publisher',
         arguments=[urdf_model_path]
         )
 
     joint_state_publisher_node = Node(
         package='joint_state_publisher',
         executable='joint_state_publisher',
-        # name='joint_state_publisher',
-        arguments=[urdf_model_path]
+        name='joint_state_publisher',
+        # arguments=[urdf_model_path, {'use_sim_time': LaunchConfiguration('use_sim_time', default='true')}]
+        arguments=[urdf_model_path, {'use_sim_time': LaunchConfiguration('use_sim_time')}]
         )
     
     # laser_state_publisher_node = Node(
