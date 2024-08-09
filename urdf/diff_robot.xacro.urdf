@@ -431,7 +431,7 @@
             <ros>
                 <namespace>/</namespace>
                 <remapping>/diff_drive_base_controller/cmd_vel_unstamped:=cmd_vel</remapping>
-                <remapping>/diff_drive_base_controller/odom:=odom</remapping>
+                <remapping>/diff_drive_base_controller/odom:=wheel_odom</remapping>
             </ros>
             <parameters>$(find robot_description)/config/diff_robot_controller.yaml</parameters>
         </plugin>
