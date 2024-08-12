@@ -19,7 +19,7 @@ def generate_launch_description():
 
     pkg_share = FindPackageShare(package=package_name).find(package_name) 
     xacro_model_path = os.path.join(pkg_share, f'urdf/{xacro_name}')
-    gazebo_world_path = os.path.join(pkg_share, 'world/carto_test.world')
+    gazebo_world_path = os.path.join(pkg_share, 'world/slam_world_test.world')
 
     # Start Gazebo server
     start_gazebo_cmd =  ExecuteProcess(
