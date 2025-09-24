@@ -15,7 +15,7 @@ import xacro
 def generate_launch_description():
     robot_name_in_model = 'luxshare_robot'
     package_name = 'robot_description'
-    xacro_name = "diff_robot.xacro.urdf"
+    xacro_name = "diff_robot_new.urdf.xacro"
 
     pkg_share = FindPackageShare(package=package_name).find(package_name) 
     xacro_model_path = os.path.join(pkg_share, f'urdf/{xacro_name}')
