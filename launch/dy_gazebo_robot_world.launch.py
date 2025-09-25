@@ -1,48 +1,50 @@
 import os
+import yaml
 
 from ament_index_python.packages import get_package_share_directory
-
+from launch.substitutions import LaunchConfiguration, PathJoinSubstitution, Command
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess, IncludeLaunchDescription, RegisterEventHandler
-from launch.event_handlers import OnProcessExit
+from launch.actions import ExecuteProcess, DeclareLaunchArgument, IncludeLaunchDescription, GroupAction, TimerAction, RegisterEventHandler
+from launch.event_handlers import OnProcessExit, OnProcessStart
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch_ros.substitutions import FindPackageShare
 from launch_ros.actions import Node
-
 import xacro
-
 
 def generate_launch_description():
     robot_name_in_model = 'dy_robot'
     package_name = 'robot_description'
-    # xacro_name = "sentry_robot_sim.xacro"
+    use_sim_time = LaunchConfiguration('use_sim_time')
+    declare_use_sim_time_cmd = DeclareLaunchArgument(
+        'use_sim_time',
+        default_value='True',
+        description='Use simulation (Gazebo) clock if true')
 
-    pkg_share = FindPackageShare(package=package_name).find(package_name) 
-    # xacro_model_path = os.path.join(pkg_share, f'urdf/{xacro_name}')
-    gazebo_world_path = os.path.join(pkg_share, 'world/carto_test.world') #mini_world.world
+    pkg_share = get_package_share_directory(package_name)
+    gazebo_world_path = os.path.join(pkg_share, 'world/carto_test.world')
 
-    # Start Gazebo server
-    start_gazebo_cmd =  ExecuteProcess(
-        cmd=['gazebo', '--verbose','-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', gazebo_world_path],
+    # Start Gazebo server - 加载world模型
+    start_gazebo_cmd = ExecuteProcess(
+        cmd=['gazebo', '--verbose', '-s', 'libgazebo_ros_init.so', '-s', 'libgazebo_ros_factory.so', gazebo_world_path],
         output='screen')
 
-    # doc = xacro.parse(open(xacro_model_path))
-    # xacro.process_doc(doc)
-    # params = {'robot_description': doc.toxml()}
+    # 
+    robot_description_path = os.path.join(
+        get_package_share_directory('robot_description'), 'urdf', 'diff_robot_new.urdf.xacro')
+    # robot_description = Command(['xacro ', robot_description_path])
+    doc = xacro.parse(open(robot_description_path))
+    xacro.process_doc(doc)
+    params = {'robot_description': doc.toxml()}
 
-    # node_robot_state_publisher = Node(
-    #     package='robot_state_publisher',
-    #     executable='robot_state_publisher',
-    #     output='screen',
-    #     parameters=[params]
-    # )
-
-    # Launch the robot
-    # spawn_entity_cmd = Node(
-    #     package='gazebo_ros', 
-    #     executable='spawn_entity.py',
-    #     arguments=['-entity', robot_name_in_model,  '-topic', params], 
-    #     output='screen')
+    # Robot State Publisher
+    robot_state_publisher_cmd = Node(
+        package='robot_state_publisher',
+        executable='robot_state_publisher',
+        name='robot_state_publisher',
+        output='screen',
+        parameters=[params, {
+            'use_sim_time': use_sim_time
+        }]
+    )
 
     load_joint_state_broadcaster = ExecuteProcess(
         cmd=['ros2', 'control', 'load_controller', '--set-state', 'active',
@@ -56,21 +58,54 @@ def generate_launch_description():
         output='screen'
     )
 
-    return LaunchDescription([
-        # RegisterEventHandler(
-        #     event_handler=OnProcessExit(
-        #         target_action=spawn_entity_cmd,
-        #         on_exit=[load_joint_state_broadcaster],
-        #     )
-        # ),
-        RegisterEventHandler(
-            event_handler=OnProcessExit(
-                target_action=load_joint_state_broadcaster,
-                on_exit=[load_diff_drive_base_controller],
-            )
-        ),
+    # Launch the robot
+    spawn_entity_cmd = Node(
+        package='gazebo_ros', 
+        executable='spawn_entity.py',
+        arguments=['-entity', robot_name_in_model,  
+                   '-topic', params],
+        output='screen')
 
-        start_gazebo_cmd,
-        # node_robot_state_publisher,
-        # spawn_entity_cmd,
-    ])
+    # 注意启动顺序
+    joint_state_after_spawn_entity = RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=spawn_entity_cmd,
+            on_exit=[load_joint_state_broadcaster],
+        )
+    )
+    diff_driver_base_after_joint_state= RegisterEventHandler(
+        event_handler=OnProcessExit(
+            target_action=load_joint_state_broadcaster,
+            on_exit=[load_diff_drive_base_controller],
+        )
+    )
+    ld = LaunchDescription()
+    ld.add_action(declare_use_sim_time_cmd)
+    ld.add_action(start_gazebo_cmd)
+    ld.add_action(robot_state_publisher_cmd)
+    ld.add_action(joint_state_after_spawn_entity)
+    ld.add_action(diff_driver_base_after_joint_state)
+    ld.add_action(spawn_entity_cmd)
+    return ld
+
+    # return LaunchDescription([
+    #     RegisterEventHandler(
+    #         event_handler=OnProcessExit(
+    #             target_action=spawn_entity_cmd,
+    #             on_exit=[load_joint_state_broadcaster],
+    #         )
+    #     ),
+    #     RegisterEventHandler(
+    #         event_handler=OnProcessExit(
+    #             target_action=load_joint_state_broadcaster,
+    #             on_exit=[load_diff_drive_base_controller],
+    #         )
+    #     ),
+
+    #     declare_use_sim_time_cmd,
+    #     start_gazebo_cmd,
+    #     robot_state_publisher_cmd,
+    #     spawn_entity_cmd,
+    # ])
+
+    
