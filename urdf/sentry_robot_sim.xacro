@@ -17,7 +17,7 @@
   <xacro:arg name="xyz" default="0.12 0.0 0.175" />
   <xacro:arg name="rpy" default="0 0 0" />
 
-  <link name="dummy"/>
+  <link name="base_footprint"/>
 
   <link name="base_link">
     <visual>
@@ -38,8 +38,8 @@
     <xacro:default_inertial mass="8.2"/>
   </link>
 
-  <joint name="dummy_joint" type="fixed">
-     <parent link="dummy"/>
+  <joint name="base_footprint_joint" type="fixed">
+     <parent link="base_footprint"/>
      <child link="base_link"/>
   </joint>
 
@@ -236,7 +236,7 @@
 
   <!-- mid360_imu plugin -->
   <!-- https://github.com/ros-simulation/gazebo_ros_pkgs/wiki/ROS-2-Migration:-IMU-Sensors -->
-  <gazebo reference="imu_link">
+  <!-- <gazebo reference="imu_link">
     <sensor name="mid360_imu" type="imu">
       <always_on>true</always_on>
       <update_rate>100</update_rate>
@@ -248,12 +248,12 @@
         <frame_name>imu_link</frame_name>
       </plugin>
     </sensor>
-  </gazebo>
+  </gazebo> -->
 
   <!-- Livox-Mid360  -->
-  <xacro:include filename="$(find ros2_livox_simulation)/urdf/mid360.xacro" />
+  <!-- <xacro:include filename="$(find ros2_livox_simulation)/urdf/mid360.xacro" />
   <xacro:mid360 name="livox_frame" parent="base_link" topic="/livox/lidar">
     <origin xyz="$(arg xyz)" rpy="$(arg rpy)" />
-  </xacro:mid360>
+  </xacro:mid360> -->
 
 </robot>
