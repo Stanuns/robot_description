@@ -43,10 +43,10 @@ def generate_launch_description():
     #     PythonLaunchDescriptionSource(os.path.join(get_package_share_directory('gazebo_ros'), 'launch', 'gzclient.launch.py')),
     # )
     # Set Gazebo plugin path
-    append_enviroment = AppendEnvironmentVariable(
-        'GAZEBO_PLUGIN_PATH',
-        os.path.join(os.path.join(get_package_share_directory('robot_description'), 'meshes'))
-    )
+    # append_enviroment = AppendEnvironmentVariable(
+    #     'GAZEBO_PLUGIN_PATH',
+    #     os.path.join(os.path.join(get_package_share_directory('robot_description'), 'meshes'))
+    # )
 
     # Robot State Publisher
     robot_state_publisher_cmd = Node(
@@ -106,7 +106,7 @@ def generate_launch_description():
     ld = LaunchDescription()
 
     # Set environment variables
-    ld.add_action(append_enviroment)
+    # ld.add_action(append_enviroment)
 
     ld.add_action(declare_use_sim_time_cmd)
     ld.add_action(start_gazebo_cmd)
