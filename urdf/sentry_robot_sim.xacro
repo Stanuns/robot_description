@@ -249,11 +249,80 @@
       </plugin>
     </sensor>
   </gazebo> -->
+  <gazebo reference="imu_link">
+    <sensor name="mid360_imu" type="imu">
+      <always_on>true</always_on>
+      <update_rate>100</update_rate>
+      <visualize>true</visualize>
+      <plugin name="imu_plugin" filename="libgazebo_ros_imu_sensor.so">
+          <ros>
+              <namespace>/</namespace>
+              <remapping>~/out:=/livox/imu</remapping>
+          </ros>
+          <frame_name>imu_link</frame_name>
+          <initial_orientation_as_reference>false</initial_orientation_as_reference>
+      </plugin>
+      <imu>
+        <angular_velocity>
+            <x>
+            <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+                <bias_mean>0.0000075</bias_mean>
+                <bias_stddev>0.0000008</bias_stddev>
+            </noise>
+            </x>
+            <y>
+            <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+                <bias_mean>0.0000075</bias_mean>
+                <bias_stddev>0.0000008</bias_stddev>
+            </noise>
+            </y>
+            <z>
+            <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>2e-4</stddev>
+                <bias_mean>0.0000075</bias_mean>
+                <bias_stddev>0.0000008</bias_stddev>
+            </noise>
+            </z>
+        </angular_velocity>
+        <linear_acceleration>
+            <x>
+            <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+                <bias_mean>0.1</bias_mean>
+                <bias_stddev>0.001</bias_stddev>
+            </noise>
+            </x>
+            <y>
+            <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+                <bias_mean>0.1</bias_mean>
+                <bias_stddev>0.001</bias_stddev>
+            </noise>
+            </y>
+            <z>
+            <noise type="gaussian">
+                <mean>0.0</mean>
+                <stddev>1.7e-2</stddev>
+                <bias_mean>0.1</bias_mean>
+                <bias_stddev>0.001</bias_stddev>
+            </noise>
+            </z>
+        </linear_acceleration>
+      </imu>
+    </sensor>
+  </gazebo>
 
   <!-- Livox-Mid360  -->
-  <!-- <xacro:include filename="$(find ros2_livox_simulation)/urdf/mid360.xacro" />
+  <xacro:include filename="$(find ros2_livox_simulation)/urdf/mid360.xacro" />
   <xacro:mid360 name="livox_frame" parent="base_link" topic="/livox/lidar">
     <origin xyz="$(arg xyz)" rpy="$(arg rpy)" />
-  </xacro:mid360> -->
+  </xacro:mid360>
 
 </robot>
