@@ -34,6 +34,13 @@
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
   </joint>
 
+  <!-- <link name="camera_init">
+  </link>
+  <joint name="livox_joint" type="fixed">
+      <parent link="livox_frame" />
+      <child link="camera_init" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+  </joint> -->
 
   <link name="chassis_link">
     <inertial>
@@ -120,7 +127,7 @@
       <parent link="fr_left_steer_link" />
       <child link="fr_left_wheel_link" />
       <axis xyz="0 0 -1" />
-      <dynamics friction="0.8" damping="0.5" />
+      <dynamics friction="0.03" damping="0.02" />
       <limit lower="-3.14159" upper="3.14159" effort="200" velocity="-1" />
   </joint>
 
@@ -174,7 +181,7 @@
       <parent link="fr_right_steer_link" />
       <child link="fr_right_wheel_link" />
       <axis xyz="0 0 1" />
-      <dynamics friction="0.8" damping="0.5" />
+      <dynamics friction="0.03" damping="0.02" />
       <limit lower="-3.14159" upper="3.14159" effort="200" velocity="-1" />
   </joint>
 
@@ -211,7 +218,7 @@
       <parent link="chassis_link" />
       <child link="re_left_wheel_link" />
       <axis xyz="0 0 -1" />
-      <dynamics friction="0.8" damping="0.5" />
+      <dynamics friction="0.03" damping="0.02" />
       <limit lower="-3.14159" upper="3.14159" effort="70" velocity="-1" />
   </joint>
 
@@ -249,7 +256,7 @@
       <child link="re_right_wheel_link" />
       <axis xyz="0 0 1" />
 
-      <dynamics friction="0.8" damping="0.5" />
+      <dynamics friction="0.03" damping="0.02" />
       <limit lower="-3.14159" upper="3.14159" effort="70" velocity="-1" />
   </joint>
 
@@ -446,9 +453,11 @@
             <right_steering_joint>fr_right_steer_joint</right_steering_joint>
             <steering_wheel_joint>virtual_steering_wheel_joint</steering_wheel_joint>
 
+            <wheel_radius>0.1</wheel_radius>
+
             <!-- Max absolute steer angle for tyre in radians-->
             <!-- Any cmd_vel angular z greater than this would be capped -->
-            <max_steer>0.383972</max_steer>
+            <max_steer>1.570796</max_steer> <!--0.383972-->
 
             <!-- Max absolute steering angle of steering wheel -->
             <max_steering_angle>1.570796</max_steering_angle>
