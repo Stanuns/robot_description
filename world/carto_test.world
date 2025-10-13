@@ -2087,7 +2087,7 @@
         <visual name='visual'>
           <geometry>
             <cylinder>
-              <radius>0.5</radius>
+              <radius>1.0</radius>
               <length>1</length>
             </cylinder>
           </geometry>
@@ -2213,7 +2213,7 @@
           <pose>0 0 0 0 -0 0</pose>
           <geometry>
             <box>
-              <size>3 3 1</size>
+              <size>1 1 1</size>
             </box>
           </geometry>
           <surface>
