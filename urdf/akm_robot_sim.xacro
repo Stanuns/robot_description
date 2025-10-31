@@ -34,11 +34,11 @@
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
   </joint>
 
-  <!-- <link name="camera_init">
+  <!-- <link name="body">
   </link>
   <joint name="livox_joint" type="fixed">
       <parent link="livox_frame" />
-      <child link="camera_init" />
+      <child link="body" />
       <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
   </joint> -->
 
@@ -127,7 +127,7 @@
       <parent link="fr_left_steer_link" />
       <child link="fr_left_wheel_link" />
       <axis xyz="0 0 -1" />
-      <dynamics friction="0.03" damping="0.02" />
+      <dynamics friction="0.8" damping="0.5" />
       <limit lower="-3.14159" upper="3.14159" effort="200" velocity="-1" />
   </joint>
 
@@ -181,7 +181,7 @@
       <parent link="fr_right_steer_link" />
       <child link="fr_right_wheel_link" />
       <axis xyz="0 0 1" />
-      <dynamics friction="0.03" damping="0.02" />
+      <dynamics friction="0.8" damping="0.5" />
       <limit lower="-3.14159" upper="3.14159" effort="200" velocity="-1" />
   </joint>
 
@@ -218,7 +218,7 @@
       <parent link="chassis_link" />
       <child link="re_left_wheel_link" />
       <axis xyz="0 0 -1" />
-      <dynamics friction="0.03" damping="0.02" />
+      <dynamics friction="0.8" damping="0.5" /> <!-- 增加阻尼和摩擦 -->
       <limit lower="-3.14159" upper="3.14159" effort="70" velocity="-1" />
   </joint>
 
@@ -255,8 +255,7 @@
       <parent link="chassis_link" />
       <child link="re_right_wheel_link" />
       <axis xyz="0 0 1" />
-
-      <dynamics friction="0.03" damping="0.02" />
+      <dynamics friction="0.8" damping="0.5" />  <!-- 增加阻尼和摩擦 -->
       <limit lower="-3.14159" upper="3.14159" effort="70" velocity="-1" />
   </joint>
 
@@ -475,7 +474,7 @@
 
             <!-- output -->
             <publish_odom>true</publish_odom>
-            <publish_odom_tf>true</publish_odom_tf>     <!-- Don't pubslish this when using robot
+            <publish_odom_tf>false</publish_odom_tf>     <!-- Don't pubslish this when using robot
             localization -->
             <publish_wheel_tf>false</publish_wheel_tf>  <!-- Don't publish this. It will override all
             wheel frames to robot_base_frame parameter below.-->
