@@ -4,7 +4,7 @@
 
   <xacro:property name="body_mass" value="25.0" />
   <xacro:property name="body_width" value="0.5" />
-  <xacro:property name="body_length" value="0.751" />
+  <xacro:property name="body_length" value="0.720" />
   <xacro:property name="body_depth" value="0.15" />
 
   <xacro:property name="wheel_radius" value="0.1" />
@@ -32,7 +32,10 @@
   <joint name="body_joint" type="fixed">
       <parent link="body" />
       <child link="base_footprint" />
-      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />
+      <origin xyz="0.0 0.0 0.0" rpy="0 0 0" />  
+      <!--<origin xyz="${body_length/2 - 0.05/2} ${-1*(body_width/2 - 0.05/2)} ${body_depth/2+0.05/2}" rpy="0 0 0"/>-->
+      <!--<origin xyz="${-1 * (body_length/2 - 0.05/2)} ${body_width/2 - 0.05/2} ${-1 * (body_depth/2+0.05/2)}" rpy="0 0 0"/>-->
+      
   </joint>
 
   <link name="base_link">
@@ -272,7 +275,8 @@
   <!-- IMU joint -->
   <joint name="imu_joint" type="fixed">
     <axis xyz="0 1 0" />
-    <origin xyz="${body_length/2 - 0.05/2} 0 ${body_depth/2+0.05/2}" rpy="0 0 0"/>
+    <!-- <origin xyz="${body_length/2 - 0.05/2} 0 ${body_depth/2+0.05/2}" rpy="0 0 0"/>--> <!-- 前部正中间 -->
+    <origin xyz="${body_length/2 - 0.05/2} ${-1*(body_width/2 - 0.05/2)} ${body_depth/2+0.05/2}" rpy="0 0 0"/> <!-- ${10*PI/180} 右前角 下俯10度， 注意需要同步修改body->base_footprint的tf关系，tf关系相反-->
     <parent link="chassis_link"/>
     <child link="imu_link"/>
   </joint>
