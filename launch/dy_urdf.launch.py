@@ -22,7 +22,7 @@ def generate_launch_description():
 
     #机器人模型
     robot_des_path = os.path.join(
-        get_package_share_directory('robot_description'), 'urdf', 'akm_robot_sim.xacro')
+        get_package_share_directory('robot_description'), 'urdf', 'akm_robot.xacro')
     robot_des = Command(['xacro ', robot_des_path])
     # doc = xacro.parse(open(robot_description_path))
     # xacro.process_doc(doc)
