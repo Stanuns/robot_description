@@ -273,17 +273,17 @@
   </joint>
 
 
-  <!-- IMU joint -->
+  <!-- front IMU joint -->
   <!-- <origin xyz="${body_length/2 - 0.05/2} 0 ${body_depth/2+0.05/2}" rpy="0 0 0"/>--> <!-- 前部正中间 -->
   <!-- ${10*PI/180} 右前角 下俯10度， 注意需要同步修改body->base_footprint的tf关系，tf关系相反-->
-  <joint name="imu_joint" type="fixed">
+  <joint name="front_imu_joint" type="fixed">
     <axis xyz="0 1 0" />
     <origin xyz="${body_length/2 - mid360_length/2 - 0.03} ${-1*(body_width/2 - mid360_length/2 - 0.025)} ${body_depth/2 + mid360_O_height}" rpy="0 0 0"/> 
     <parent link="chassis_link"/>
-    <child link="imu_link"/>
+    <child link="imu_link_192_168_1_111"/>
   </joint>
   <!-- IMU -->
-  <link name="imu_link">
+  <link name="imu_link_192_168_1_111">
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
@@ -306,8 +306,40 @@
     </inertial>
   </link>
 
-  <!--livox_frame link -->
-  <link name="livox_frame">
+  <!-- rear IMU joint -->
+  <joint name="rear_imu_joint" type="fixed">
+    <axis xyz="0 1 0" />
+    <origin xyz="${-1*(body_length/2 - mid360_length/2 - 0.01)} ${body_width/2 - mid360_length/2 - 0.045} ${body_depth/2 + mid360_O_height}" rpy="0 0 0"/> 
+    <parent link="chassis_link"/>
+    <child link="imu_link_192_168_1_140"/>
+  </joint>
+  <!-- IMU -->
+  <link name="imu_link_192_168_1_140">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="mid360_length mid360_length mid360_height"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="mid360_length mid360_length mid360_height"/>
+      </geometry>
+      <material name="green">
+        <color rgba="0 1 0 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <mass value="1e-2" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+
+  <!--front livox_frame link -->
+  <link name="livox_frame_192_168_1_111">
     <collision>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
@@ -330,11 +362,42 @@
     </inertial>
   </link>
 
-  <!-- livox frame joint -->
-  <joint name="livox_joint" type="fixed">
+  <!--front livox frame joint -->
+  <joint name="front_livox_joint" type="fixed">
     <origin xyz="0 0 0" rpy="0 0 0"/> 
-    <parent link="imu_link"/>
-    <child link="livox_frame"/>
+    <parent link="imu_link_192_168_1_111"/>
+    <child link="livox_frame_192_168_1_111"/>
+  </joint>
+
+  <!--rear livox_frame link -->
+  <link name="livox_frame_192_168_1_140">
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="mid360_length mid360_length mid360_height"/>
+      </geometry>
+    </collision>
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <box size="mid360_length mid360_length mid360_height"/>
+      </geometry>
+      <material name="blue">
+        <color rgba="0 0 1 1"/>
+      </material>
+    </visual>
+    <inertial>
+      <mass value="1e-2" />
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+    </inertial>
+  </link>
+
+  <!--rear livox frame joint -->
+  <joint name="rear_livox_joint" type="fixed">
+    <origin xyz="0 0 0" rpy="0 0 3.14159"/> 
+    <parent link="imu_link_192_168_1_140"/>
+    <child link="livox_frame_192_168_1_140"/>
   </joint>
 
   <!-- Virtual Steering wheel -->
