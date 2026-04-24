@@ -425,4 +425,12 @@
       <limit lower="-3" upper="3" effort="200" velocity="20" />
   </joint>
 
+  <!-- fixed camera_link -->
+  <link name="camera_link"></link>
+  <joint name="camera_joint" type="fixed">
+    <origin xyz="${body_length/2} 0.0 0.8" rpy="0 0 0"/> 
+    <parent link="chassis_link"/>
+    <child link="camera_link"/>
+  </joint>
+
 </robot>
